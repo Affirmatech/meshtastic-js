@@ -130,7 +130,8 @@ export class HttpConnection extends MeshDevice {
     let readBuffer = new ArrayBuffer(1);
     const { signal } = this.abortController;
 
-    while (readBuffer.byteLength > 0) {
+    let error = false;
+    while (readBuffer.byteLength > 0 && !error) {
       this.pendingRequest = true;
       await fetch(
         `${this.portId}/api/v1/fromradio?all=${
@@ -160,7 +161,7 @@ export class HttpConnection extends MeshDevice {
             Types.Emitter[Types.Emitter.ReadFromRadio],
             `❌ ${e.message}`,
           );
-
+          error = true;
           this.updateDeviceStatus(Types.DeviceStatusEnum.DeviceReconnecting);
         });
     }
