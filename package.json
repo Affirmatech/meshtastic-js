@@ -1,10 +1,14 @@
 {
   "name": "@meshtastic/js",
-  "version": "2.3.7-2",
+  "version": "2.5.9-3",
   "description": "Browser library for interfacing with meshtastic devices",
   "license": "GPL-3.0-only",
   "scripts": {
     "build": "tsup && pnpm biome format .",
+    "lint": "pnpm biome check",
+    "lint:fix": "pnpm biome check --fix",
+    "format": "pnpm biome format .",
+    "format:fix": "pnpm biome format . --fix",
     "generate:docs": "typedoc src/index.ts"
   },
   "keywords": [
@@ -15,12 +19,12 @@
   },
   "sideEffects": false,
   "type": "module",
-  "packageManager": "pnpm@9.7.1",
-  "module": "./dist/index.js",
+  "packageManager": "pnpm@9.1.4",
+  "module": "./dist/index.ts",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
+      "import": "./dist/index.ts",
       "types": "./dist/index.d.ts"
     }
   },
@@ -33,19 +37,19 @@
     "url": "git+https://github.com/meshtastic/js.git"
   },
   "dependencies": {
+    "@bufbuild/protobuf": "^2.2.1",
+    "@meshtastic/protobufs": "npm:@jsr/meshtastic__protobufs@^2.5.9",
     "crc": "^4.3.2",
     "ste-simple-events": "^3.0.11",
-    "serialport": "^12.0.0",
     "tslog": "^4.9.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
-    "@buf/meshtastic_protobufs.bufbuild_es": "^1.10.0-20240817124710-a1b6e1d8e51a.1",
-    "@types/node": "^22.4.1",
-    "@types/w3c-web-serial": "^1.0.6",
+    "@biomejs/biome": "^1.9.3",
+    "@types/node": "^22.7.5",
+    "@types/w3c-web-serial": "^1.0.7",
     "@types/web-bluetooth": "^0.0.20",
-    "tsup": "^8.2.4",
-    "typedoc": "^0.26.6",
-    "typescript": "^5.5.4"
+    "tsup": "^8.3.0",
+    "typedoc": "^0.26.8",
+    "typescript": "^5.6.2"
   }
 }

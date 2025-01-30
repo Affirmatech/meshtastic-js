@@ -3,10 +3,10 @@ import {
   FromRadioUuid,
   ServiceUuid,
   ToRadioUuid,
-} from "../constants.js";
-import { MeshDevice } from "../meshDevice.js";
-import * as Types from "../types.js";
-import { typedArrayToBuffer } from "../utils/index.js";
+} from "../constants.ts";
+import { MeshDevice } from "../meshDevice.ts";
+import * as Types from "../types.ts";
+import { typedArrayToBuffer } from "../utils/index.ts";
 
 /** Allows to connect to a Meshtastic device via bluetooth */
 export class BleConnection extends MeshDevice {
@@ -223,34 +223,33 @@ export class BleConnection extends MeshDevice {
     return await Promise.resolve(true);
   }
 
-  /** Short description */
+  /**
+   * Reads data packets from the radio until empty
+   * @throws Error if reading fails
+   */
   protected async readFromRadio(): Promise<void> {
-    // if (this.pendingRead) {
-    //   return Promise.resolve();
-    // }
-    // this.pendingRead = true;
-    let readBuffer = new ArrayBuffer(1);
+    try {
+      let hasMoreData = true;
+      while (hasMoreData && this.fromRadioCharacteristic) {
+        const value = await this.fromRadioCharacteristic.readValue();
 
-    while (readBuffer.byteLength > 0 && this.fromRadioCharacteristic) {
-      await this.fromRadioCharacteristic
-        .readValue()
-        .then((value) => {
-          readBuffer = value.buffer;
+        if (value.byteLength === 0) {
+          hasMoreData = false;
+          continue;
+        }
 
-          if (value.byteLength > 0) {
-            this.handleFromRadio(new Uint8Array(readBuffer));
-          }
-          this.updateDeviceStatus(Types.DeviceStatusEnum.DeviceConnected);
-        })
-        .catch((e: Error) => {
-          readBuffer = new ArrayBuffer(0);
-          this.log.error(
-            Types.Emitter[Types.Emitter.ReadFromRadio],
-            `❌ ${e.message}`,
-          );
-        });
+        await this.handleFromRadio(new Uint8Array(value.buffer));
+        this.updateDeviceStatus(Types.DeviceStatusEnum.DeviceConnected);
+      }
+    } catch (error) {
+      this.log.error(
+        Types.Emitter[Types.Emitter.ReadFromRadio],
+        `❌ ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+      throw error; // Re-throw to let caller handle
+    } finally {
+      // this.pendingRead = false;
     }
-    // this.pendingRead = false;
   }
 
   /**
