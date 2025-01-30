@@ -623,46 +623,46 @@ export abstract class MeshDevice {
   }
 
   /** Factory resets the current device */
-  public async factoryResetDevice(): Promise<number> {
-    this.log.debug(
-      Types.Emitter[Types.Emitter.FactoryReset],
-      "♻️ Factory resetting device",
-    );
+  // public async factoryResetDevice(): Promise<number> {
+  //   this.log.debug(
+  //     Types.Emitter[Types.Emitter.FactoryReset],
+  //     "♻️ Factory resetting device",
+  //   );
 
-    const factoryReset = new Protobuf.Admin.AdminMessage({
-      payloadVariant: {
-        case: "factoryResetDevice",
-        value: 1,
-      },
-    });
+  //   const factoryReset = new Protobuf.Admin.AdminMessage({
+  //     payloadVariant: {
+  //       case: "factoryResetDevice",
+  //       value: 1,
+  //     },
+  //   });
 
-    return await this.sendPacket(
-      factoryReset.toBinary(),
-      Protobuf.Portnums.PortNum.ADMIN_APP,
-      "self",
-    );
-  }
+  //   return await this.sendPacket(
+  //     factoryReset.toBinary(),
+  //     Protobuf.Portnums.PortNum.ADMIN_APP,
+  //     "self",
+  //   );
+  // }
 
   /** Factory resets the current config */
-  public async factoryResetConfig(): Promise<number> {
-    this.log.debug(
-      Types.Emitter[Types.Emitter.FactoryReset],
-      "♻️ Factory resetting config",
-    );
+  // public async factoryResetConfig(): Promise<number> {
+  //   this.log.debug(
+  //     Types.Emitter[Types.Emitter.FactoryReset],
+  //     "♻️ Factory resetting config",
+  //   );
 
-    const factoryReset = new Protobuf.Admin.AdminMessage({
-      payloadVariant: {
-        case: "factoryResetConfig",
-        value: 1,
-      },
-    });
+  //   const factoryReset = new Protobuf.Admin.AdminMessage({
+  //     payloadVariant: {
+  //       case: "factoryResetConfig",
+  //       value: 1,
+  //     },
+  //   });
 
-    return await this.sendPacket(
-      factoryReset.toBinary(),
-      Protobuf.Portnums.PortNum.ADMIN_APP,
-      "self",
-    );
-  }
+  //   return await this.sendPacket(
+  //     factoryReset.toBinary(),
+  //     Protobuf.Portnums.PortNum.ADMIN_APP,
+  //     "self",
+  //   );
+  // }
 
   /** Triggers the device configure process */
   public configure(): Promise<number> {
@@ -762,7 +762,7 @@ export abstract class MeshDevice {
         );
 
         //TODO: HERE
-        if (decodedMessage.payloadVariant.value.position) {
+        if (decodedMessage.payloadVariant.value?.position) {
           this.events.onPositionPacket.dispatch({
             id: decodedMessage.id,
             rxTime: new Date(),

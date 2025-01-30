@@ -111,6 +111,7 @@ export class BleConnection extends MeshDevice {
       this.complete();
     });
 
+    let error = "";
     /** Connect to device */
     await this.device.gatt
       ?.connect()
@@ -126,7 +127,16 @@ export class BleConnection extends MeshDevice {
           Types.Emitter[Types.Emitter.Connect],
           `❌ Failed to connect: ${e.message}`,
         );
+        if (e.message == "Connect failed") {
+          error = e.message;
+        }
       });
+
+    if (error) {
+      console.log("Error Message!  Abort Abort!");
+      this.disconnect();
+      return;
+    }
 
     await this.gattServer
       ?.getPrimaryService(ServiceUuid)
