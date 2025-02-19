@@ -131,7 +131,7 @@ export class HttpConnection extends MeshDevice {
 
     // We create a dummy request here just to have a Response object to work with
     // The actual connection check is done via ping()
-    const response = await fetch(`${this.portId}/hotspot-detect.html`, {
+    const response = await fetch(`${this.portId}/index.html`, {
       signal: this.abortController.signal,
       mode: "no-cors",
     });
@@ -241,7 +241,7 @@ export class HttpConnection extends MeshDevice {
     try {
       const response = await this.withRetry(
         async () => {
-          return await fetch(`${this.portId}/hotspot-detect.html`, {
+          return await fetch(`${this.portId}/index.html`, {
             signal,
             mode: "no-cors",
           });
